@@ -19,8 +19,8 @@ class DatabaseSeeder extends Seeder
         DB::statement('TRUNCATE TABLE stock, products, categories, warehouses CASCADE;');
 
         // Warehouses
-        $warehouseA = Warehouse::create(['name' => 'Warehouse A', 'code' => 'W-A']);
-        $warehouseB = Warehouse::create(['name' => 'Warehouse B', 'code' => 'W-B']);
+        $warehouseA = Warehouse::create(['name' => 'Warehouse A', 'code' => 'A']);
+        $warehouseB = Warehouse::create(['name' => 'Warehouse B', 'code' => 'B']);
 
         // Categories
         $electronics = Category::create(['name' => 'Electronics']);
