@@ -241,21 +241,37 @@ export default function Products() {
                                             )}
                                         </TableCell>
                                         <TableCell className="pr-4 text-right">
-                                            {product.status === 'Shortage' && (
-                                                <Button
-                                                    size="sm"
-                                                    variant="outline"
-                                                    className="gap-1.5 border-amber-500/30 bg-amber-500/10 text-amber-700 hover:bg-amber-500/20 hover:text-amber-800 dark:text-amber-400 dark:hover:text-amber-300"
-                                                    onClick={() =>
-                                                        handleSuggestTransfer(
-                                                            product,
-                                                        )
-                                                    }
-                                                >
-                                                    <ArrowLeftRight className="h-3.5 w-3.5" />
-                                                    Suggest Transfer
-                                                </Button>
-                                            )}
+                                            {product.status === 'Shortage' && (() => {
+
+                                                //to check if there is surplus stock in the other warehouse
+                                                const canTransferFromA = product.warehouse_a_qty > product.reorder_level && product.warehouse_b_qty < product.reorder_level;
+                                                const canTransferFromB = product.warehouse_b_qty > product.reorder_level && product.warehouse_a_qty < product.reorder_level;
+
+                                                if (canTransferFromA || canTransferFromB) {
+                                                    return (
+                                                        <Button
+                                                            size="sm"
+                                                            variant="outline"
+                                                            className="gap-1.5 border-amber-500/30 bg-amber-500/10 text-amber-700 hover:bg-amber-500/20 hover:text-amber-800 dark:text-amber-400 dark:hover:text-amber-300"
+                                                            onClick={() => handleSuggestTransfer(product)}
+                                                        >
+                                                            <ArrowLeftRight className="h-3.5 w-3.5" />
+                                                            Suggest Transfer
+                                                        </Button>
+                                                    );
+                                                }
+
+
+                                                return (
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                        className="gap-1.5 border-blue-500/30 bg-blue-500/10 text-blue-700 hover:bg-blue-500/20 hover:text-blue-800"
+                                                    >
+                                                        Purchase More
+                                                    </Button>
+                                                );
+                                            })()}
                                         </TableCell>
                                     </TableRow>
                                 ))}
