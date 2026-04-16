@@ -1,4 +1,7 @@
+import { ArrowRight, Loader2 } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 import {
     Dialog,
     DialogContent,
@@ -7,11 +10,8 @@ import {
     DialogTitle,
     DialogFooter,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { toast } from 'sonner';
-import { ArrowRight, Loader2 } from 'lucide-react';
 
 export interface TransferData {
     productId: number;
@@ -44,11 +44,16 @@ export function TransferModal({
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!data) return;
+
+        if (!data) {
+            return;
+        }
 
         const qty = parseInt(quantity, 10);
+
         if (isNaN(qty) || qty < 1) {
             setError('Please enter a valid quantity (min 1).');
+
             return;
         }
 
@@ -104,10 +109,13 @@ export function TransferModal({
             setQuantity('');
             setError('');
         }
+
         onOpenChange(value);
     };
 
-    if (!data) return null;
+    if (!data) {
+        return null;
+    }
 
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -122,8 +130,12 @@ export function TransferModal({
                             {data.productName}
                         </span>
                         <div className="mt-1.5 text-xs">
-                            <span className="text-muted-foreground">Reorder Level: </span>
-                            <span className="font-medium text-foreground">{data.reorderLevel}</span>
+                            <span className="text-muted-foreground">
+                                Reorder Level:{' '}
+                            </span>
+                            <span className="font-medium text-foreground">
+                                {data.reorderLevel}
+                            </span>
                         </div>
                     </DialogDescription>
                 </DialogHeader>
@@ -133,25 +145,25 @@ export function TransferModal({
                         {/* Route visualization */}
                         <div className="flex items-center justify-center gap-6 rounded-lg bg-muted/50 p-4">
                             <div className="text-center">
-                                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
+                                <p className="mb-1 text-xs font-medium tracking-wider text-muted-foreground uppercase">
                                     Source
                                 </p>
                                 <p className="text-sm font-semibold">
                                     {data.fromWarehouseName}
                                 </p>
-                                <p className="text-xs font-medium text-emerald-600 dark:text-emerald-500 mt-1">
+                                <p className="mt-1 text-xs font-medium text-emerald-600 dark:text-emerald-500">
                                     {data.fromWarehouseQty} available
                                 </p>
                             </div>
                             <ArrowRight className="h-5 w-5 text-muted-foreground" />
                             <div className="text-center">
-                                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
+                                <p className="mb-1 text-xs font-medium tracking-wider text-muted-foreground uppercase">
                                     Destination
                                 </p>
                                 <p className="text-sm font-semibold">
                                     {data.toWarehouseName}
                                 </p>
-                                <p className="text-xs font-medium text-amber-600 dark:text-amber-500 mt-1">
+                                <p className="mt-1 text-xs font-medium text-amber-600 dark:text-amber-500">
                                     {data.toWarehouseQty} current
                                 </p>
                             </div>
@@ -210,5 +222,6 @@ export function TransferModal({
 
 function getCsrfToken(): string {
     const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
+
     return match ? decodeURIComponent(match[1]) : '';
 }
