@@ -53,7 +53,7 @@ class ShortageReportController extends Controller
                 'suggested_source'    => $canTransfer ? ($sourceWarehouseId === $warehouseA ? 'Warehouse A' : 'Warehouse B') : null,
                 'source_available'    => $canTransfer ? $sourceStock->quantity : 0,
             ];
-        })->filter(fn($item) => $item['suggested_source_id'] !== null); // Only show if transfer is possible
+        })->filter(fn($item) => $item['suggested_source_id'] !== null); 
 
         return response()->json($result->values());
     }
